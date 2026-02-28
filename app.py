@@ -180,27 +180,57 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Visibilidad del Botón de Colapsar Sidebar con Icono */
+    /* Visibilidad del Botón de Colapsar Sidebar con Icono (Siempre Visible) */
     [data-testid="collapsedControl"] {
-        background-color: #1e293b !important;
+        background-color: #f43f5e !important; /* Rojo vibrante para que se vea siempre */
         color: white !important;
         border-radius: 0 12px 12px 0 !important;
-        padding: 8px 12px !important;
-        box-shadow: 4px 4px 15px rgba(0,0,0,0.3) !important;
+        padding: 10px 15px !important;
+        box-shadow: 4px 4px 15px rgba(244, 63, 94, 0.4) !important;
         display: flex !important;
         align-items: center !important;
         gap: 8px !important;
+        z-index: 999999 !important;
+        position: fixed !important;
+        top: 20px !important;
+        left: 0 !important;
     }
     [data-testid="collapsedControl"]::before {
-        content: '☰';
-        font-size: 1.2rem;
-        font-weight: bold;
+        content: '☰ MENÚ';
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 1px;
     }
     
     button[title="Collapse sidebar"] svg, button[title="Expand sidebar"] svg {
         fill: white !important;
         width: 25px !important;
         height: 25px !important;
+    }
+
+    /* Estilo para la línea roja divisoria entre párrafos */
+    .cronica-container {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .cronica-text {
+        flex: 1;
+        text-align: justify;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    .red-divider {
+        width: 4px;
+        height: 100px;
+        background-color: #f43f5e;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+    }
+    @media (max-width: 768px) {
+        .cronica-container { flex-direction: column; }
+        .red-divider { width: 100%; height: 4px; }
     }
     .sidebar-title {
         color: #1e3a8a;
@@ -391,7 +421,10 @@ if page == "🏛️ CONTEXTO HISTÓRICO":
     for year, label in events:
         if year >= year_range[0] and year <= year_range[1]:
             y_val = df_filtered[df_filtered['Año'] == year]['TOTAL'].iloc[0]
-            fig1.add_annotation(x=year, y=y_val, text=label, showarrow=True, arrowhead=2, ay=-40, bgcolor="#1e293b", font=dict(color="white", size=11, family="Inter", weight="bold"), bordercolor="#1e293b")
+            # Colores vibrantes y menos formales para los eventos
+            colors_map = {"Reforma Tributaria": "#f59e0b", "Pandemia": "#ef4444", "Rebote (+47.5%)": "#10b981"}
+            ev_color = colors_map.get(label, "#1e293b")
+            fig1.add_annotation(x=year, y=y_val, text=f"✨ {label}", showarrow=True, arrowhead=2, ay=-50, bgcolor=ev_color, font=dict(color="white", size=12, family="Outfit", weight="bold"), bordercolor="white", borderwidth=2, borderpad=6, bordercolor=ev_color)
     st.plotly_chart(apply_stitch_style(fig1, 450), use_container_width=True)
     st.markdown("---")
 
@@ -402,13 +435,22 @@ if page == "🏛️ CONTEXTO HISTÓRICO":
         fig2.add_trace(go.Scatter(x=df_filtered['Año'], y=df_filtered['TV Nacional'], name='TV Nacional', line=dict(color='#0369a1', width=4)))
         fig2.add_trace(go.Scatter(x=df_filtered['Año'], y=df_filtered['Digital'], name='Digital', line=dict(color='#0ea5e9', width=4, dash='dot')))
         if 2019 >= year_range[0] and 2019 <= year_range[1]:
-            fig2.add_annotation(x=2019, y=df_filtered[df_filtered['Año']==2019]['Digital'].iloc[0], text="<b>PUNTO DE INFLEXIÓN</b>", showarrow=True, arrowhead=1, ax=50, ay=-50, bgcolor="white", bordercolor="#1e293b", font=dict(color="#1e293b", size=12))
+            fig2.add_annotation(x=2019, y=df_filtered[df_filtered['Año']==2019]['Digital'].iloc[0], text="🚀 <b>¡EL GRAN SALTO!</b>", showarrow=True, arrowhead=3, ax=60, ay=-60, bgcolor="#f43f5e", bordercolor="white", borderwidth=2, font=dict(color="white", size=13))
         st.plotly_chart(apply_stitch_style(fig2, 450), use_container_width=True)
 
-    st.markdown("<h3 style='text-align: center;'>📖 Crónica de una Transición Histórica</h3>", unsafe_allow_html=True)
-    e1, e2 = st.columns(2)
-    with e1: st.markdown("<div style='text-align: justify;'><b>La Era de la TV (1995-2015):</b> Pilar indiscutible por dos décadas. Dominio masivo basado en audiencias lineales.</div>", unsafe_allow_html=True)
-    with e2: st.markdown("<div style='text-align: justify;'><b>La Revolución Digital (2016-Hoy):</b> Explosión por smartphones. El 2019 marcó el cruce irreversible hacia el dominio digital.</div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="cronica-container">
+        <div class="cronica-text">
+            <b>📺 La Era de la TV (1995-2015):</b> Pilar indiscutible por dos décadas. 
+            Dominio masivo basado en audiencias lineales que unificaban el país.
+        </div>
+        <div class="red-divider"></div>
+        <div class="cronica-text">
+            <b>📱 La Revolución Digital (2016-Hoy):</b> Explosión por smartphones. 
+            El 2019 marcó el cruce irreversible hacia el dominio digital total.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown('<div class="micro-signature">Análisis por Luis Miguel López | Designed with Stitch</div>', unsafe_allow_html=True)
 
