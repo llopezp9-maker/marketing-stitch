@@ -609,8 +609,13 @@ elif page == "📊 AÑO A AÑO":
             fig10.add_trace(go.Scatter(x=data_yoy['Año'], y=data_yoy['Trend'], name="Tendencia (Regresión)", 
                                        line=dict(color='#ef4444', width=2, dash='dash')))
             
-            # Ajustamos la posición del texto por tipo de traza para evitar conflictos
-            fig10.update_traces(selector=dict(type='bar'), textposition="outside", cliponaxis=False)
+            # Ajustamos la posición y estilo del texto para máxima legibilidad
+            fig10.update_traces(
+                selector=dict(type='bar'), 
+                textposition="outside", 
+                cliponaxis=False,
+                textfont=dict(color='#1e293b', size=12, family="Outfit", weight='bold')
+            )
             fig10.update_traces(selector=dict(type='scatter'), textposition="top center")
             
             st.plotly_chart(apply_stitch_style(fig10, 450), use_container_width=True)
