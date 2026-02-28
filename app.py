@@ -424,7 +424,7 @@ if page == "🏛️ CONTEXTO HISTÓRICO":
             # Colores vibrantes y menos formales para los eventos
             colors_map = {"Reforma Tributaria": "#f59e0b", "Pandemia": "#ef4444", "Rebote (+47.5%)": "#10b981"}
             ev_color = colors_map.get(label, "#1e293b")
-            fig1.add_annotation(x=year, y=y_val, text=f"✨ {label}", showarrow=True, arrowhead=2, ay=-50, bgcolor=ev_color, font=dict(color="white", size=12, family="Outfit", weight="bold"), bordercolor="white", borderwidth=2, borderpad=6, bordercolor=ev_color)
+            fig1.add_annotation(x=year, y=y_val, text=f"✨ {label}", showarrow=True, arrowhead=2, ay=-50, bgcolor=ev_color, font=dict(color="white", size=12, family="Outfit", weight="bold"), bordercolor="white", borderwidth=2, borderpad=6)
     st.plotly_chart(apply_stitch_style(fig1, 450), use_container_width=True)
     st.markdown("---")
 
