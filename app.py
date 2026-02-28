@@ -180,22 +180,40 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Botones de Colapsar Sidebar Permanentes y Notorios */
-    button[title="Collapse sidebar"], button[title="Expand sidebar"] {
+    /* Botones de Colapsar Sidebar Permanentes y Notorios (Soporte Multi-idioma) */
+    button[title*="sidebar" i], button[aria-label*="sidebar" i], 
+    button[title*="barra lateral" i], button[aria-label*="barra lateral" i] {
         background-color: #f43f5e !important;
         border-radius: 50% !important;
-        width: 45px !important;
-        height: 45px !important;
+        width: 48px !important;
+        height: 48px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4) !important;
-        transition: transform 0.2s ease !important;
-        z-index: 1000000 !important;
+        box-shadow: 0 4px 15px rgba(244, 63, 94, 0.5) !important;
+        z-index: 999999 !important;
         opacity: 1 !important;
         visibility: visible !important;
     }
-    button[title="Collapse sidebar"]:hover { transform: scale(1.1); }
+
+    /* Ajuste específico para el botón de EXPANDIR (cuando el sidebar está cerrado) */
+    [data-testid="stSidebarCollapsedControl"] button {
+        left: 15px !important;
+        top: 15px !important;
+        background-color: #f43f5e !important;
+    }
+
+    /* Forzar que el icono (SVG) dentro de los botones sea blanco y grande */
+    button[title*="sidebar" i] svg, button[title*="barra lateral" i] svg {
+        fill: white !important;
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    button[title*="sidebar" i]:hover, button[title*="barra lateral" i]:hover { 
+        transform: scale(1.1); 
+        background-color: #e11d48 !important; 
+    }
     
     button[title="Collapse sidebar"] svg, button[title="Expand sidebar"] svg {
         fill: white !important;
