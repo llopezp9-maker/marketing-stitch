@@ -180,32 +180,27 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Visibilidad del Botón de Colapsar Sidebar con Icono (Siempre Visible) */
-    [data-testid="collapsedControl"] {
-        background-color: #f43f5e !important; /* Rojo vibrante para que se vea siempre */
-        color: white !important;
-        border-radius: 0 12px 12px 0 !important;
-        padding: 10px 15px !important;
-        box-shadow: 4px 4px 15px rgba(244, 63, 94, 0.4) !important;
+    /* Botones de Colapsar Sidebar Permanentes y Notorios */
+    button[title="Collapse sidebar"], button[title="Expand sidebar"] {
+        background-color: #f43f5e !important;
+        border-radius: 50% !important;
+        width: 45px !important;
+        height: 45px !important;
         display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
-        z-index: 999999 !important;
-        position: fixed !important;
-        top: 20px !important;
-        left: 0 !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 12px rgba(244, 63, 94, 0.4) !important;
+        transition: transform 0.2s ease !important;
+        z-index: 1000000 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
-    [data-testid="collapsedControl"]::before {
-        content: '☰ MENÚ';
-        font-size: 0.8rem;
-        font-weight: 800;
-        letter-spacing: 1px;
-    }
+    button[title="Collapse sidebar"]:hover { transform: scale(1.1); }
     
     button[title="Collapse sidebar"] svg, button[title="Expand sidebar"] svg {
         fill: white !important;
-        width: 25px !important;
-        height: 25px !important;
+        width: 30px !important;
+        height: 30px !important;
     }
 
     /* Estilo para la línea roja divisoria entre párrafos */
@@ -292,52 +287,55 @@ df = load_all_market_data()
 # 4. Estilo Stitch para Gráficas Premium (Tamaño Unificado)
 def apply_stitch_style(fig, height=450, title=""):
     fig.update_layout(
-        height=height,
-        title=dict(
-            text=f"<b>{title}</b>" if title else "",
-            font=dict(family="Outfit", size=20, color='#1e293b'),
-            x=0.05
-        ),
-        paper_bgcolor='rgba(0,0,0,0)', 
-        plot_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(
-            gridcolor='rgba(226, 232, 240, 0.8)', 
-            zeroline=False,
-            showline=True, 
-            linecolor='#1e293b',
-            title=dict(font=dict(color='#1e293b', size=13, family="Inter", weight='bold')),
-            tickfont=dict(color='#1e293b', size=12, weight='bold')
-        ),
-        yaxis=dict(
-            gridcolor='rgba(226, 232, 240, 0.8)', 
-            zeroline=False,
-            showline=True, 
-            linecolor='#1e293b',
-            title=dict(font=dict(color='#1e293b', size=13, family="Inter", weight='bold')),
-            tickfont=dict(color='#1e293b', size=12, weight='bold')
-        ),
-        legend=dict(
-            font=dict(color='#1e293b', size=11, weight='bold'),
-            bgcolor='rgba(255,255,255,0.9)',
-            bordercolor='#94a3b8',
-            borderwidth=1,
-            yanchor="top",
-            y=0.99,
-            xanchor="left",
-            x=0.01
-        ),
-        coloraxis_colorbar=dict(
-            tickfont=dict(color='#1e293b', size=11, weight='bold'),
-            title_font=dict(color='#1e293b', size=12, weight='bold')
-        ),
-        hoverlabel=dict(
-            bgcolor="#1e293b",
-            font_size=14,
-            font_family="Inter",
-            font_color="white",
-            bordercolor="#1e293b"
-        ),
-        margin=dict(t=80, b=50, l=60, r=40)
+         height=height,
+         margin=dict(l=80, r=40, t=50, b=80), 
+         title=dict(
+             text=f"<b>{title}</b>" if title else "",
+             font=dict(size=18, color='#1e293b'),
+             x=0.5,
+             xanchor='center'
+         ),
+         paper_bgcolor='rgba(0,0,0,0)', 
+         plot_bgcolor='rgba(0,0,0,0)',
+         xaxis=dict(
+             gridcolor='rgba(226, 232, 240, 0.8)', 
+             zeroline=False,
+             showline=True, 
+             linecolor='#1e293b',
+             title=dict(font=dict(color='#1e293b', size=13, family="Inter", weight='bold')),
+             tickfont=dict(color='#1e293b', size=12, weight='bold')
+         ),
+         yaxis=dict(
+             gridcolor='rgba(226, 232, 240, 0.8)', 
+             zeroline=False,
+             showline=True, 
+             linecolor='#1e293b',
+             title=dict(font=dict(color='#1e293b', size=13, family="Inter", weight='bold')),
+             tickfont=dict(color='#1e293b', size=12, weight='bold')
+         ),
+         legend=dict(
+             title=dict(text="<b>Medio</b>", font=dict(color='#1e293b', size=11)),
+             font=dict(color='#1e293b', size=10, weight='bold'),
+             bgcolor='rgba(255,255,255,0.95)',
+             bordercolor='#1e293b',
+             borderwidth=1,
+             yanchor="top",
+             y=0.98,
+             xanchor="left",
+             x=0.02,
+             orientation="v"
+         ),
+         coloraxis_colorbar=dict(
+             tickfont=dict(color='#1e293b', size=11, weight='bold'),
+             title_font=dict(color='#1e293b', size=12, weight='bold')
+         ),
+         hoverlabel=dict(
+             bgcolor="#1e293b",
+             font_size=14,
+             font_family="Inter",
+             font_color="white",
+             bordercolor="#1e293b"
+         )
     )
     return fig
 
@@ -409,22 +407,25 @@ with k2: st.markdown(f'<div class="kpi-card"><div class="kpi-label">Cuota Digita
 with k3: st.markdown(f'<div class="kpi-card"><div class="kpi-label">Año Final</div><div class="kpi-value">{int(df_filtered["Año"].iloc[-1])}</div></div>', unsafe_allow_html=True)
 with k4: st.markdown(f'<div class="kpi-card"><div class="kpi-label">Líder de Confianza</div><div class="kpi-value">TV Nacional</div></div>', unsafe_allow_html=True)
 
-# 7. Contenido Dinámico según Navegación
+# --- CONTENIDO ---
 if page == "🏛️ CONTEXTO HISTÓRICO":
-    st.header(f"Análisis del Contexto Histórico ({year_range[0]} - {year_range[1]})")
-    st.subheader("1. Evolución del Mercado con Picos Críticos")
+    st.markdown(f'<h1 style="text-align: center;">Análisis del Contexto Histórico ({year_range[0]} - {year_range[1]})</h1>', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: center;">1. Evolución del Mercado con Picos Críticos</h3>', unsafe_allow_html=True)
     fig1 = px.area(df_filtered, x='Año', y='TOTAL', line_shape='spline')
     fig1.update_traces(line_color='#0ea5e9', fillcolor='rgba(14, 165, 233, 0.1)')
     
-    # Eventos dinámicos según el filtro
-    events = [(2016, "Reforma Tributaria"), (2020, "Pandemia"), (2021, "Rebote (+47.5%)")]
-    for year, label in events:
+    events = [
+        (2016, "Reforma Tributaria", -70, "#f59e0b"), 
+        (2020, "Pandemia", -130, "#ef4444"), 
+        (2021, "Rebote ✨", -70, "#10b981")
+    ]
+    for year, label, offset_y, ev_color in events:
         if year >= year_range[0] and year <= year_range[1]:
             y_val = df_filtered[df_filtered['Año'] == year]['TOTAL'].iloc[0]
-            # Colores vibrantes y menos formales para los eventos
-            colors_map = {"Reforma Tributaria": "#f59e0b", "Pandemia": "#ef4444", "Rebote (+47.5%)": "#10b981"}
-            ev_color = colors_map.get(label, "#1e293b")
-            fig1.add_annotation(x=year, y=y_val, text=f"✨ {label}", showarrow=True, arrowhead=2, ay=-50, bgcolor=ev_color, font=dict(color="white", size=12, family="Outfit", weight="bold"), bordercolor="white", borderwidth=2, borderpad=6)
+            # Añadir punto marcador exacto
+            fig1.add_trace(go.Scatter(x=[year], y=[y_val], mode='markers', marker=dict(color=ev_color, size=12, line=dict(color='white', width=2)), showlegend=False))
+            # Ajustar flecha para que sea oscura y visible
+            fig1.add_annotation(x=year, y=y_val, text=f"✨ {label}", showarrow=True, arrowhead=3, arrowsize=1, arrowwidth=2.5, arrowcolor="#1e293b", ay=offset_y, bgcolor=ev_color, font=dict(color="white", size=12, family="Outfit", weight="bold"), bordercolor="white", borderwidth=2, borderpad=6)
     st.plotly_chart(apply_stitch_style(fig1, 450), use_container_width=True)
     st.markdown("---")
 
@@ -455,8 +456,8 @@ if page == "🏛️ CONTEXTO HISTÓRICO":
     st.markdown('<div class="micro-signature">Análisis por Luis Miguel López | Designed with Stitch</div>', unsafe_allow_html=True)
 
 elif page == "📺 VALOR DE LA TV":
-    st.title("El Poder de la Pantalla Grande")
-    st.subheader("Storytelling: Por qué la TV sigue siendo el Ancla de las Marcas")
+    st.markdown('<h1 style="text-align: center;">El Poder de la Pantalla Grande</h1>', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: center;">Storytelling: Por qué la TV sigue siendo el Ancla de las Marcas</h3>', unsafe_allow_html=True)
     
     col_text, col_viz = st.columns([1, 1.2])
     
@@ -484,7 +485,7 @@ elif page == "📺 VALOR DE LA TV":
         """, unsafe_allow_html=True)
 
     with col_viz:
-        st.subheader("Crecimiento Absoluto de la TV Nacional")
+        st.markdown('<h3 style="text-align: center;">Crecimiento Absoluto de la TV Nacional</h3>', unsafe_allow_html=True)
         df_tv = df[['Año', 'TV Nacional']].copy()
         fig_tv = px.bar(df_tv, x='Año', y='TV Nacional', color='TV Nacional', color_continuous_scale='Blues')
         fig_tv.update_layout(coloraxis_showscale=False) # Quitar escala de color para evitar solapamiento
@@ -518,58 +519,83 @@ elif page == "📺 VALOR DE LA TV":
     st.markdown('<div class="micro-signature">Análisis Estratégico por Luis Miguel López | Storytelling: El Valor de la TV</div>', unsafe_allow_html=True)
 
 elif page == "📈 TENDENCIAS & MIX":
-    st.header(f"Tendencias y Mix de Medios ({year_range[0]} - {year_range[1]})")
-    st.write("Análisis profundo del peso relativo de los canales.")
-    col_l, col_r = st.columns(2)
-    with col_l:
-        st.subheader("3. Mix de Medios (Evolución Acumulada)")
+    st.markdown(f'<h1 style="text-align: center;">Tendencias y Mix de Medios ({year_range[0]} - {year_range[1]})</h1>', unsafe_allow_html=True)
+    st.markdown('<p style="text-align: center;">Análisis profundo del peso relativo de los canales.</p>', unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Fila 1: Títulos
+    t1, t2 = st.columns(2)
+    with t1: st.markdown('<h3 style="text-align: center;">3. Mix de Medios (Evolución Acumulada)</h3>', unsafe_allow_html=True)
+    with t2: st.markdown('<h3 style="text-align: center;">4. Intensidad de Crecimiento</h3>', unsafe_allow_html=True)
+    
+    # Fila 2: Gráficas
+    g1, g2 = st.columns(2)
+    with g1:
         fig3 = go.Figure()
         for m in ['Digital', 'TV Nacional', 'Radio', 'Exterior', 'Prensa']:
             fig3.add_trace(go.Scatter(x=df_filtered['Año'], y=df_filtered[m], stackgroup='one', name=m))
         st.plotly_chart(apply_stitch_style(fig3, 450), use_container_width=True)
-        st.markdown("**Contexto del Mix:** Note cómo la franja Digital ensancha el mercado total desde 2015.")
-    with col_r:
-        st.subheader("4. Intensidad de Crecimiento")
+    with g2:
         fig5 = px.line(df_filtered, x='Año', y=['Digital', 'TV Nacional', 'Radio'], markers=True)
+        fig5.update_traces(marker=dict(size=8, line=dict(width=1, color='white')))
         st.plotly_chart(apply_stitch_style(fig5, 450), use_container_width=True)
-        st.markdown("**Análisis de Intensidad:** Digital muestra una curva exponencial (J-curve) frente a la linealidad de TV.")
+        
+    # Fila 3: Textos
+    f1, f2 = st.columns(2)
+    with f1: st.markdown('<div style="text-align: center; color: #475569; font-size: 0.9rem;"><b>Contexto del Mix:</b> Note cómo la franja Digital ensancha el mercado total desde 2015.</div>', unsafe_allow_html=True)
+    with f2: st.markdown('<div style="text-align: center; color: #475569; font-size: 0.9rem;"><b>Análisis de Intensidad:</b> Digital muestra una curva exponencial (J-curve) frente a la linealidad de TV.</div>', unsafe_allow_html=True)
 
 elif page == "🧮 ESTADÍSTICA":
-    st.header(f"Análisis Analítico y Estadística ({year_range[0]} - {year_range[1]})")
-    r1, r2 = st.columns(2)
-    with r1:
-        st.subheader("5. Correlación: Digital vs Internet")
+    st.markdown(f'<h1 style="text-align: center;">Análisis Analítico y Estadística ({year_range[0]} - {year_range[1]})</h1>', unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Bloque A: Correlación y Rangos
+    bt1, bt2 = st.columns(2)
+    with bt1: st.markdown('<h3 style="text-align: center;">5. Correlación: Digital vs Internet</h3>', unsafe_allow_html=True)
+    with bt2: st.markdown('<h3 style="text-align: center;">7. Comparativa de Rangos por Medio</h3>', unsafe_allow_html=True)
+    
+    bg1, bg2 = st.columns(2)
+    with bg1:
         fig6 = px.scatter(df_filtered, x='Internet_Penetration', y='Digital', color='Año', text='Año')
-        fig6.update_traces(textposition='top center')
+        fig6.update_traces(textposition='top center', textfont=dict(color='#1e293b', size=11, weight='bold'))
         st.plotly_chart(apply_stitch_style(fig6, 450), use_container_width=True)
-        st.markdown("**Contexto:** Relación directa entre acceso a red y pauta digital.")
+    with bg2:
+        medios_box = ['Digital', 'TV Nacional', 'Radio', 'Exterior', 'Prensa']
+        fig8 = px.box(df_filtered, y=medios_box, points="all", color_discrete_sequence=['#0ea5e9'])
+        st.plotly_chart(apply_stitch_style(fig8, 450), use_container_width=True)
         
-        st.subheader("6. Matriz de Interacción")
+    bf1, bf2 = st.columns(2)
+    with bf1: st.markdown('<div style="text-align: center; color: #475569; font-size: 0.9rem;"><b>Contexto:</b> Relación directa entre acceso a red y pauta digital.</div>', unsafe_allow_html=True)
+    with bf2: st.markdown('<div style="text-align: center; color: #475569; font-size: 0.9rem;"><b>Interpretación:</b> El crecimiento agresivo de lo digital frente a la estabilidad de otros medios.</div>', unsafe_allow_html=True)
+    
+    st.markdown("<br><hr><br>", unsafe_allow_html=True)
+    
+    # Bloque B: Matriz y Volatilidad
+    mt1, mt2 = st.columns(2)
+    with mt1: st.markdown('<h3 style="text-align: center;">6. Matriz de Interacción</h3>', unsafe_allow_html=True)
+    with mt2: st.markdown('<h3 style="text-align: center;">8. Curva de Volatilidad</h3>', unsafe_allow_html=True)
+    
+    mg1, mg2 = st.columns(2)
+    with mg1:
         corr = df_filtered[['TOTAL', 'Digital', 'TV Nacional', 'Radio']].corr()
         fig7 = px.imshow(corr, text_auto=".2f", color_continuous_scale='Blues')
         st.plotly_chart(apply_stitch_style(fig7, 450), use_container_width=True)
-        st.markdown("**Análisis:** Digital ya es el principal motor de la varianza del mercado total.")
-    with r2:
-        st.subheader("7. Comparativa de Rangos por Medio")
-        medios_box = ['Digital', 'TV Nacional', 'Radio', 'Exterior', 'Prensa']
-        # Usamos un azul sólido y limpio para evitar contrastes extraños
-        fig8 = px.box(df_filtered, y=medios_box, points="all", color_discrete_sequence=['#0ea5e9'])
-        st.plotly_chart(apply_stitch_style(fig8, 450), use_container_width=True)
-        st.markdown("**Interpretación:** Este análisis comparativo permite ver la escala y volatilidad de cada medio. Digital muestra el crecimiento más agresivo, mientras que Prensa y Radio presentan rangos más estables y bajos.")
-        
-        st.subheader("8. Curva de Volatilidad")
+    with mg2:
         fig9 = px.line(df_filtered, x='Año', y='Var_YoY')
         fig9.add_hline(y=0, line_dash="dash")
         st.plotly_chart(apply_stitch_style(fig9, 450), use_container_width=True)
-        st.markdown("**Contexto:** Visualización de la estabilidad y shocks económicos históricos.")
+        
+    mf1, mf2 = st.columns(2)
+    with mf1: st.markdown('<div style="text-align: center; color: #475569; font-size: 0.9rem;"><b>Análisis:</b> Digital ya es el principal motor de la varianza del mercado total.</div>', unsafe_allow_html=True)
+    with mf2: st.markdown('<div style="text-align: center; color: #475569; font-size: 0.9rem;"><b>Contexto:</b> Visualización de la estabilidad y shocks económicos históricos.</div>', unsafe_allow_html=True)
     
     st.markdown('<div class="micro-signature">Análisis por Luis Miguel López | Designed with Stitch</div>', unsafe_allow_html=True)
 
 elif page == "📊 AÑO A AÑO":
-    st.header(f"Variación Año a Año (Detalle) ({year_range[0]} - {year_range[1]})")
+    st.markdown(f'<h1 style="text-align: center;">Variación Año a Año (Detalle) ({year_range[0]} - {year_range[1]})</h1>', unsafe_allow_html=True)
     a1, a2 = st.columns([2, 1])
     with a1:
-        st.subheader("9. Crecimiento YoY con Tendencia y Etiquetas")
+        st.markdown('<h3 style="text-align: center;">9. Crecimiento YoY con Tendencia y Etiquetas</h3>', unsafe_allow_html=True)
         data_yoy = df_filtered.dropna().copy()
         
         if len(data_yoy) > 1:
@@ -592,14 +618,14 @@ elif page == "📊 AÑO A AÑO":
         else:
             st.warning("Seleccione un rango mayor a 1 año para ver la tendencia YoY.")
     with a2:
-        st.subheader("10. Tabla de Recientes")
+        st.markdown('<h3 style="text-align: center;">10. Tabla de Recientes</h3>', unsafe_allow_html=True)
         st.dataframe(df_filtered[['Año', 'TOTAL', 'Var_YoY']].tail(10).round(2), use_container_width=True)
     
     st.markdown('<div class="micro-signature">Análisis por Luis Miguel López | Designed with Stitch</div>', unsafe_allow_html=True)
 
 elif page == "🔮 PROYECCIONES":
-    st.header("Pronósticos Predictivos (2026-2031)")
-    st.subheader("11. Comparativa de Modelos: ARIMA, Regresión y Correlación")
+    st.markdown('<h1 style="text-align: center;">Pronósticos Predictivos (2026-2031)</h1>', unsafe_allow_html=True)
+    st.markdown('<h3 style="text-align: center;">11. Comparativa de Modelos: ARIMA, Regresión y Correlación</h3>', unsafe_allow_html=True)
     
     # Simulación/Cálculo de 3 métodos para todo el rango (Histórico + Futuro)
     years_full = np.arange(1995, 2032)
@@ -638,10 +664,13 @@ elif page == "🔮 PROYECCIONES":
             x=df_proy['Año'], y=df_proy[c], name=c, mode='lines+text',
             line=dict(color=colors[c], width=2, dash='dot' if years_full[0] < 2026 else 'solid'),
             text=[f"{v/1e6:.1f}B" if y==2031 else "" for y,v in zip(df_proy['Año'], df_proy[c])],
-            textposition="top center"
+            textposition="top center",
+            textfont=dict(color='#1e293b', size=13, weight='bold')
         ))
     
-    fig12.add_vline(x=2025.5, line_dash="dash", line_color="#94a3b8", annotation_text="INICIO PROYECCIÓN")
+    fig12.add_vline(x=2025.5, line_dash="dash", line_color="#1e293b", 
+                    annotation_text="INICIO PROYECCIÓN", annotation_position="top left",
+                    annotation_font=dict(color="#1e293b", size=12, weight='bold'))
     
     st.plotly_chart(apply_stitch_style(fig12, 450, title="Evolución Histórica y Modelos Predictivos"), use_container_width=True)
     st.markdown("""
@@ -687,7 +716,13 @@ elif page == "🎯 HALLAZGOS & CONCLUSIÓN":
     
     # Ajustar ejes
     fig_final.update_yaxes(title_text="Inversión (M COP)", secondary_y=False)
-    fig_final.update_yaxes(title_text="Crecimiento PIB (%)", secondary_y=True, showgrid=False)
+    fig_final.update_yaxes(
+        title_text="Crecimiento PIB (%)", 
+        secondary_y=True, 
+        showgrid=False,
+        tickfont=dict(color='#1e293b', size=12, weight='bold'),
+        title_font=dict(color='#1e293b', size=13, weight='bold')
+    )
     
     st.plotly_chart(apply_stitch_style(fig_final, 450), use_container_width=True)
     
