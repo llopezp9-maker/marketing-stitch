@@ -179,6 +179,29 @@ st.markdown("""
         color: #1e3a8a !important;
         font-weight: 600 !important;
     }
+    
+    /* Visibilidad del Botón de Colapsar Sidebar con Icono */
+    [data-testid="collapsedControl"] {
+        background-color: #1e293b !important;
+        color: white !important;
+        border-radius: 0 12px 12px 0 !important;
+        padding: 8px 12px !important;
+        box-shadow: 4px 4px 15px rgba(0,0,0,0.3) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    [data-testid="collapsedControl"]::before {
+        content: '☰';
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    
+    button[title="Collapse sidebar"] svg, button[title="Expand sidebar"] svg {
+        fill: white !important;
+        width: 25px !important;
+        height: 25px !important;
+    }
     .sidebar-title {
         color: #1e3a8a;
         font-weight: 800;
@@ -236,13 +259,13 @@ def load_all_market_data():
 
 df = load_all_market_data()
 
-# 4. Estilo Stitch para Gráficas Premium
+# 4. Estilo Stitch para Gráficas Premium (Tamaño Unificado)
 def apply_stitch_style(fig, height=450, title=""):
     fig.update_layout(
         height=height,
         title=dict(
             text=f"<b>{title}</b>" if title else "",
-            font=dict(family="Outfit", size=20, color='#1e3a8a'),
+            font=dict(family="Outfit", size=20, color='#1e293b'),
             x=0.05
         ),
         paper_bgcolor='rgba(0,0,0,0)', 
@@ -251,22 +274,22 @@ def apply_stitch_style(fig, height=450, title=""):
             gridcolor='rgba(226, 232, 240, 0.8)', 
             zeroline=False,
             showline=True, 
-            linecolor='#94a3b8',
-            title=dict(font=dict(color='#475569', size=13, family="Inter", weight='bold')),
-            tickfont=dict(color='#475569', size=11, weight='bold')
+            linecolor='#1e293b',
+            title=dict(font=dict(color='#1e293b', size=13, family="Inter", weight='bold')),
+            tickfont=dict(color='#1e293b', size=12, weight='bold')
         ),
         yaxis=dict(
             gridcolor='rgba(226, 232, 240, 0.8)', 
             zeroline=False,
             showline=True, 
-            linecolor='#94a3b8',
-            title=dict(font=dict(color='#475569', size=13, family="Inter", weight='bold')),
-            tickfont=dict(color='#475569', size=11, weight='bold')
+            linecolor='#1e293b',
+            title=dict(font=dict(color='#1e293b', size=13, family="Inter", weight='bold')),
+            tickfont=dict(color='#1e293b', size=12, weight='bold')
         ),
         legend=dict(
             font=dict(color='#1e293b', size=11, weight='bold'),
-            bgcolor='rgba(255,255,255,0.8)',
-            bordercolor='#e2e8f0',
+            bgcolor='rgba(255,255,255,0.9)',
+            bordercolor='#94a3b8',
             borderwidth=1,
             yanchor="top",
             y=0.99,
@@ -274,14 +297,15 @@ def apply_stitch_style(fig, height=450, title=""):
             x=0.01
         ),
         coloraxis_colorbar=dict(
-            tickfont=dict(color='#475569', size=11, weight='bold'),
-            title_font=dict(color='#475569', size=12, weight='bold')
+            tickfont=dict(color='#1e293b', size=11, weight='bold'),
+            title_font=dict(color='#1e293b', size=12, weight='bold')
         ),
         hoverlabel=dict(
-            bgcolor="white",
-            font_size=13,
+            bgcolor="#1e293b",
+            font_size=14,
             font_family="Inter",
-            bordercolor="#e2e8f0"
+            font_color="white",
+            bordercolor="#1e293b"
         ),
         margin=dict(t=80, b=50, l=60, r=40)
     )
@@ -367,7 +391,7 @@ if page == "🏛️ CONTEXTO HISTÓRICO":
     for year, label in events:
         if year >= year_range[0] and year <= year_range[1]:
             y_val = df_filtered[df_filtered['Año'] == year]['TOTAL'].iloc[0]
-            fig1.add_annotation(x=year, y=y_val, text=label, showarrow=True, arrowhead=2, ay=-40, bgcolor="#0ea5e9", font=dict(color="white"))
+            fig1.add_annotation(x=year, y=y_val, text=label, showarrow=True, arrowhead=2, ay=-40, bgcolor="#1e293b", font=dict(color="white", size=11, family="Inter", weight="bold"), bordercolor="#1e293b")
     st.plotly_chart(apply_stitch_style(fig1, 450), use_container_width=True)
     st.markdown("---")
 
@@ -378,8 +402,8 @@ if page == "🏛️ CONTEXTO HISTÓRICO":
         fig2.add_trace(go.Scatter(x=df_filtered['Año'], y=df_filtered['TV Nacional'], name='TV Nacional', line=dict(color='#0369a1', width=4)))
         fig2.add_trace(go.Scatter(x=df_filtered['Año'], y=df_filtered['Digital'], name='Digital', line=dict(color='#0ea5e9', width=4, dash='dot')))
         if 2019 >= year_range[0] and 2019 <= year_range[1]:
-            fig2.add_annotation(x=2019, y=df_filtered[df_filtered['Año']==2019]['Digital'].iloc[0], text="PUNTO DE INFLEXIÓN", showarrow=True, arrowhead=1, ax=50, ay=-50, bgcolor="#f8fafc", bordercolor="#0ea5e9")
-        st.plotly_chart(apply_stitch_style(fig2, 500), use_container_width=True)
+            fig2.add_annotation(x=2019, y=df_filtered[df_filtered['Año']==2019]['Digital'].iloc[0], text="<b>PUNTO DE INFLEXIÓN</b>", showarrow=True, arrowhead=1, ax=50, ay=-50, bgcolor="white", bordercolor="#1e293b", font=dict(color="#1e293b", size=12))
+        st.plotly_chart(apply_stitch_style(fig2, 450), use_container_width=True)
 
     st.markdown("<h3 style='text-align: center;'>📖 Crónica de una Transición Histórica</h3>", unsafe_allow_html=True)
     e1, e2 = st.columns(2)
@@ -423,7 +447,7 @@ elif page == "📺 VALOR DE LA TV":
         fig_tv = px.bar(df_tv, x='Año', y='TV Nacional', color='TV Nacional', color_continuous_scale='Blues')
         fig_tv.update_layout(coloraxis_showscale=False) # Quitar escala de color para evitar solapamiento
         fig_tv.add_trace(go.Scatter(x=df_tv['Año'], y=df_tv['TV Nacional'], mode='lines', line=dict(color='#ef4444', width=2), name="Tendencia"))
-        st.plotly_chart(apply_stitch_style(fig_tv, 400, "Inversión TV Nacional (1995-2025)"), use_container_width=True)
+        st.plotly_chart(apply_stitch_style(fig_tv, 450, "Inversión TV Nacional (1995-2025)"), use_container_width=True)
         st.info("💡 Gráfico de Soporte: Observe cómo la inversión total en TV ha crecido consistentemente año tras año, validando su relevancia absoluta en el mercado.")
 
     st.divider()
@@ -460,12 +484,12 @@ elif page == "📈 TENDENCIAS & MIX":
         fig3 = go.Figure()
         for m in ['Digital', 'TV Nacional', 'Radio', 'Exterior', 'Prensa']:
             fig3.add_trace(go.Scatter(x=df_filtered['Año'], y=df_filtered[m], stackgroup='one', name=m))
-        st.plotly_chart(apply_stitch_style(fig3, 400), use_container_width=True)
+        st.plotly_chart(apply_stitch_style(fig3, 450), use_container_width=True)
         st.markdown("**Contexto del Mix:** Note cómo la franja Digital ensancha el mercado total desde 2015.")
     with col_r:
         st.subheader("4. Intensidad de Crecimiento")
         fig5 = px.line(df_filtered, x='Año', y=['Digital', 'TV Nacional', 'Radio'], markers=True)
-        st.plotly_chart(apply_stitch_style(fig5, 400), use_container_width=True)
+        st.plotly_chart(apply_stitch_style(fig5, 450), use_container_width=True)
         st.markdown("**Análisis de Intensidad:** Digital muestra una curva exponencial (J-curve) frente a la linealidad de TV.")
 
 elif page == "🧮 ESTADÍSTICA":
@@ -475,26 +499,26 @@ elif page == "🧮 ESTADÍSTICA":
         st.subheader("5. Correlación: Digital vs Internet")
         fig6 = px.scatter(df_filtered, x='Internet_Penetration', y='Digital', color='Año', text='Año')
         fig6.update_traces(textposition='top center')
-        st.plotly_chart(apply_stitch_style(fig6, 350), use_container_width=True)
+        st.plotly_chart(apply_stitch_style(fig6, 450), use_container_width=True)
         st.markdown("**Contexto:** Relación directa entre acceso a red y pauta digital.")
         
         st.subheader("6. Matriz de Interacción")
         corr = df_filtered[['TOTAL', 'Digital', 'TV Nacional', 'Radio']].corr()
         fig7 = px.imshow(corr, text_auto=".2f", color_continuous_scale='Blues')
-        st.plotly_chart(apply_stitch_style(fig7, 350), use_container_width=True)
+        st.plotly_chart(apply_stitch_style(fig7, 450), use_container_width=True)
         st.markdown("**Análisis:** Digital ya es el principal motor de la varianza del mercado total.")
     with r2:
         st.subheader("7. Comparativa de Rangos por Medio")
         medios_box = ['Digital', 'TV Nacional', 'Radio', 'Exterior', 'Prensa']
         # Usamos un azul sólido y limpio para evitar contrastes extraños
         fig8 = px.box(df_filtered, y=medios_box, points="all", color_discrete_sequence=['#0ea5e9'])
-        st.plotly_chart(apply_stitch_style(fig8, 400), use_container_width=True)
+        st.plotly_chart(apply_stitch_style(fig8, 450), use_container_width=True)
         st.markdown("**Interpretación:** Este análisis comparativo permite ver la escala y volatilidad de cada medio. Digital muestra el crecimiento más agresivo, mientras que Prensa y Radio presentan rangos más estables y bajos.")
         
         st.subheader("8. Curva de Volatilidad")
         fig9 = px.line(df_filtered, x='Año', y='Var_YoY')
         fig9.add_hline(y=0, line_dash="dash")
-        st.plotly_chart(apply_stitch_style(fig9, 350), use_container_width=True)
+        st.plotly_chart(apply_stitch_style(fig9, 450), use_container_width=True)
         st.markdown("**Contexto:** Visualización de la estabilidad y shocks económicos históricos.")
     
     st.markdown('<div class="micro-signature">Análisis por Luis Miguel López | Designed with Stitch</div>', unsafe_allow_html=True)
@@ -577,7 +601,7 @@ elif page == "🔮 PROYECCIONES":
     
     fig12.add_vline(x=2025.5, line_dash="dash", line_color="#94a3b8", annotation_text="INICIO PROYECCIÓN")
     
-    st.plotly_chart(apply_stitch_style(fig12, 550, title="Evolución Histórica y Modelos Predictivos"), use_container_width=True)
+    st.plotly_chart(apply_stitch_style(fig12, 450, title="Evolución Histórica y Modelos Predictivos"), use_container_width=True)
     st.markdown("""
     **Interpretación de Modelos:**
     *   **ARIMA**: Captura la ciclicidad esperada del mercado.
@@ -623,7 +647,7 @@ elif page == "🎯 HALLAZGOS & CONCLUSIÓN":
     fig_final.update_yaxes(title_text="Inversión (M COP)", secondary_y=False)
     fig_final.update_yaxes(title_text="Crecimiento PIB (%)", secondary_y=True, showgrid=False)
     
-    st.plotly_chart(apply_stitch_style(fig_final, 500), use_container_width=True)
+    st.plotly_chart(apply_stitch_style(fig_final, 450), use_container_width=True)
     
     # Sección de Conclusiones Finales (Estilo Imagen)
     st.markdown(f"""
